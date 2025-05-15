@@ -207,7 +207,7 @@ resource "aws_launch_template" "runner" {
   }
 
   dynamic "tag_specifications" {
-    for_each = var.instance_target_capacity_type == "spot" ? [1] : [] # Include the block only if the value is "spot"
+    for_each = var.instance_target_capacity_type == "spot" && length(var.enable_on_demand_failover_for_errors) == 0 ? [1] : [] # Include the block only if the value is "spot" and there is no falback to on-demand instances
     content {
       resource_type = "spot-instances-request"
       tags = merge(
